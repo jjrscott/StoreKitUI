@@ -14,7 +14,7 @@
 @synthesize label;
 
 - (id)init {
-	if(self = [super initWithFrame:[[[UIApplication sharedApplication] keyWindow] bounds]]) {
+	if((self = [super initWithFrame:CGRectZero])) {
 		self.opaque = NO;
 		self.backgroundColor = [UIColor clearColor];
 		
@@ -40,7 +40,7 @@
 	if(!indicator) {
 		indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
 		[indicator startAnimating];
-		indicator.center = [[[UIApplication sharedApplication] keyWindow] center];
+		indicator.center = [[self superview] center];
 		[self addSubview:indicator];
 		[indicator release];
 	}
@@ -89,9 +89,11 @@
 	[self removeFromSuperview];
 }
 
-- (void)show {
+- (void)showInView:(UIView*)view {
 	if(!self.superview)
-		[[[UIApplication sharedApplication] keyWindow] addSubview:self];
+		[view addSubview:self];
+  
+  self.frame = view.bounds;
 	
 	self.transform = CGAffineTransformMakeScale(1.5, 1.5);
 	

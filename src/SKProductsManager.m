@@ -29,6 +29,7 @@ static SKProductsManager *productManager = nil;
 	}
 	
 	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:[NSString stringWithFormat:@"StoreKitUI_%@", key]];
+  [[NSUserDefaults standardUserDefaults] synchronize];
 	
 	if([delegate respondsToSelector:@selector(productsManagerDidCompletePurchase:)]) {
 		[delegate performSelector:@selector(productsManagerDidCompletePurchase:) withObject:productID];
@@ -40,7 +41,7 @@ static SKProductsManager *productManager = nil;
 // PUBLIC
 
 - (id)init {
-	if(self = [super init]) {
+	if((self = [super init])) {
 		products = [[NSArray array] copy];
 		
 		delegate = nil;
@@ -84,7 +85,7 @@ static SKProductsManager *productManager = nil;
 	return NSUIntegerMax;
 }
 
-- (void)release {
+- (oneway void)release {
 
 }
 
@@ -109,6 +110,13 @@ static SKProductsManager *productManager = nil;
 	[preq start];
 }
 
+- (void)purchaseProductWithIdentifier:(NSString *)aProductIdentifier
+{
+  for (SKProduct* product in products)
+    if ([aProductIdentifier isEqualToString:product.productIdentifier])
+      [self purchaseProduct:product];
+}
+
 - (void)purchaseProduct:(SKProduct *)aProduct {
 	SKPayment *payment = [SKPayment paymentWithProduct:aProduct];
 	[[SKPaymentQueue defaultQueue] addPayment:payment];
@@ -122,6 +130,10 @@ static SKProductsManager *productManager = nil;
 }
 
 - (BOOL)isProductPurchased:(NSString *)productID {
+#if TARGET_IPHONE_SIMULATOR
+  return YES;
+#endif
+  
 	NSString *key = productID;
 	
 	if([productID rangeOfString:@"."].location != NSNotFound) {
@@ -130,6 +142,12 @@ static SKProductsManager *productManager = nil;
 	
 	return [[NSUserDefaults standardUserDefaults] boolForKey:[NSString stringWithFormat:@"StoreKitUI_%@", key]];
 }
+
+- (void)restoreCompletedTransactions
+{
+	[[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
+}
+
 
 - (void)requestDidFinish:(SKRequest *)request
 {

@@ -15,7 +15,7 @@
 
 @property (nonatomic, retain, readonly) UILabel *label;
 
-- (void)show;
+- (void)showInView:(UIView*)view;
 - (void)hide;
 
 @end

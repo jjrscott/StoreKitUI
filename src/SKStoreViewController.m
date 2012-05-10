@@ -6,7 +6,7 @@
 //  Copyright 2009 New Media Geekz. All rights reserved.
 //
 
-#import "SKStoreViewController.h"
+#import "StoreKitUI/SKStoreViewController.h"
 #import "StoreKitUI/SKProductsManager.h"
 #import "SKProgressView.h"
 #import "SKDebug.h"
@@ -28,7 +28,7 @@
 }
 
 - (id)init {
-	if(self = [super initWithStyle:UITableViewStylePlain]) {
+	if((self = [super initWithStyle:UITableViewStylePlain])) {
 		if(![SKPaymentQueue canMakePayments]) {
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:NSLocalizedString(@"In-app purchase is disabled. Please enable it to activate more features.", @"In-app purchase is disabled. Please enable it to activate more features.") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
 			[alert show];
@@ -46,6 +46,7 @@
 		progressView = [[SKProgressView alloc] init];
 		progressView.label.text = NSLocalizedString(@"Loading...", @"Loading...");
 		[progressView.label sizeToFit];
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Restore" style:UIBarButtonItemStylePlain target:self action:@selector(restoreCompletedTransactions)] autorelease];
 	}
 	
 	return self;
@@ -74,7 +75,7 @@
 			if(productIDs) {
 				[[SKProductsManager productManager] loadProducts:productIDs];
 				
-				[progressView performSelector:@selector(show) withObject:nil afterDelay:0.3];
+				[progressView performSelector:@selector(showInView:) withObject:self.view afterDelay:0.3];
 			}
 		}
 	}
@@ -144,10 +145,20 @@
 	
 	progressView.label.text = NSLocalizedString(@"Purchasing...", @"Purchasing...");
 	[progressView.label sizeToFit];
-	[progressView show];
+	[progressView showInView:self.view];
 	
 	[[SKProductsManager productManager] purchaseProductAtIndex:indexPath.row];
 }
+
+-(IBAction)restoreCompletedTransactions
+{
+  progressView.label.text = NSLocalizedString(@"Restoring...", @"Restoring...");
+	[progressView.label sizeToFit];
+	[progressView showInView:self.view];
+
+  [[SKProductsManager productManager] restoreCompletedTransactions];
+}
+
 
 - (void)dealloc {
 	[[SKProductsManager productManager] removeObserver:self forKeyPath:@"products"];

@@ -29,9 +29,12 @@ extern NSString *const SKProductsManagerFinishedPurchaseNotification;
 - (void)loadProducts:(NSSet *)allProducts;
 
 - (void)purchaseProduct:(SKProduct *)aProduct;
+- (void)purchaseProductWithIdentifier:(NSString *)productID;
 - (void)purchaseProductAtIndex:(NSInteger)index;
 
 - (BOOL)isProductPurchased:(NSString *)productID;
+
+- (void)restoreCompletedTransactions;
 
 @end
 
