@@ -166,6 +166,8 @@ static SKProductsManager *productManager = nil;
 	[products release];
 	products = [response.products copy];
 	[self didChangeValueForKey:@"products"];
+  
+  SKDINFO(@"products: %@ invalidProductIdentifiers: %@", response.products, response.invalidProductIdentifiers);
 	
 	if([delegate respondsToSelector:@selector(productsManagerDidGetNewProducts:)]) {
 		[delegate performSelector:@selector(productsManagerDidGetNewProducts:) withObject:products];
