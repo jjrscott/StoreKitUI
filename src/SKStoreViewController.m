@@ -11,6 +11,7 @@
 #import "SKProgressView.h"
 #import "SKDebug.h"
 
+#import "SKStoreProductViewCell.h"
 #import <StoreKit/StoreKit.h>
 
 @implementation SKStoreViewController
@@ -112,29 +113,13 @@
     
     static NSString *CellIdentifier = @"SKUIStoreCell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
-    }
+  SKStoreProductViewCell *cell = [SKStoreProductViewCell reusableCellWithIdentifier:CellIdentifier forTableView:tableView];
 	
 	SKProduct *product = [[[SKProductsManager productManager] products] objectAtIndex:indexPath.row];
+  
+  [cell setProduct:product];
 	
-	cell.textLabel.text = [product localizedTitle];
-	
-	if([[SKProductsManager productManager] isProductPurchased:product.productIdentifier]) {
-		cell.accessoryType = UITableViewCellAccessoryCheckmark;
-		cell.selectionStyle = UITableViewCellSelectionStyleNone;
-	} else {
-		NSNumberFormatter *currencyStyle = [[NSNumberFormatter alloc] init];
-		[currencyStyle setLocale:product.priceLocale];
-		[currencyStyle setFormatterBehavior:NSNumberFormatterBehavior10_4];
-		[currencyStyle setNumberStyle:NSNumberFormatterCurrencyStyle];
-		
-		cell.detailTextLabel.text = [currencyStyle stringFromNumber:product.price];
-		[currencyStyle release];
-	}
-	
-    return cell;
+  return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -171,6 +156,13 @@
 	productIDs = nil;
 	
     [super dealloc];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  SKProduct *product = [[[SKProductsManager productManager] products] objectAtIndex:indexPath.row];
+
+  return [SKStoreProductViewCell heightForProduct:product];
 }
 
 
