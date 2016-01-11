@@ -29,7 +29,7 @@
 }
 
 - (id)init {
-	if((self = [super initWithStyle:UITableViewStylePlain])) {
+	if((self = [super initWithStyle:UITableViewStyleGrouped])) {
 		if(![SKPaymentQueue canMakePayments]) {
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:NSLocalizedString(@"In-app purchase is disabled. Please enable it to activate more features.", @"In-app purchase is disabled. Please enable it to activate more features.") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
 			[alert show];
@@ -120,6 +120,18 @@
   [cell setProduct:product];
 	
   return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section;
+{
+    if (section > 0)
+    {
+        return UITableViewAutomaticDimension;
+    }
+    else
+    {
+        return CGFLOAT_MIN;
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
