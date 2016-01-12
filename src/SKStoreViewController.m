@@ -20,10 +20,10 @@
 
 - (void)dismissModalViewController {
 	if(self.parentViewController != self.navigationController) {
-		[self.parentViewController dismissModalViewControllerAnimated:YES];
+		[self.parentViewController dismissViewControllerAnimated:YES completion:NULL];
 	} else {
 		if(self.navigationController == self.navigationController.parentViewController.modalViewController) {
-			[self.navigationController.parentViewController dismissModalViewControllerAnimated:YES];
+			[self.navigationController.parentViewController dismissViewControllerAnimated:YES completion:NULL];
 		}
 	}
 }

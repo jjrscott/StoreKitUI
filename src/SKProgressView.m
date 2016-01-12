@@ -48,7 +48,7 @@
 	[label sizeToFit];
 	label.center = CGPointMake(indicator.center.x, indicator.center.y + 30);
 	label.adjustsFontSizeToFitWidth = NO;
-	label.textAlignment = UITextAlignmentCenter;
+	label.textAlignment = NSTextAlignmentCenter;
 	label.opaque = NO;
 	label.backgroundColor = [UIColor clearColor];
 	label.textColor = [UIColor whiteColor];

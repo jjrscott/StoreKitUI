@@ -32,7 +32,7 @@
       self.detailTextLabel.backgroundColor = [UIColor clearColor];
       descriptionLabel = [[UILabel alloc] initWithFrame:CGRectZero];
       descriptionLabel.backgroundColor = [UIColor clearColor];
-      descriptionLabel.lineBreakMode = UILineBreakModeWordWrap;
+      descriptionLabel.lineBreakMode = NSLineBreakByWordWrapping;
       descriptionLabel.font = [UIFont systemFontOfSize:14.];
       descriptionLabel.highlightedTextColor = [UIColor whiteColor];
 
