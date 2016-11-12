@@ -172,9 +172,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  SKProduct *product = [[[SKProductsManager productManager] products] objectAtIndex:indexPath.row];
-
-  return [SKStoreProductViewCell heightForProduct:product];
+    SKProduct *product = [[[SKProductsManager productManager] products] objectAtIndex:indexPath.row];
+    
+    return [SKStoreProductViewCell heightForProduct:product tableView:tableView];
 }
 
 

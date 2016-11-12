@@ -50,7 +50,7 @@
   
   remainderRect = self.contentView.bounds;
 
-  remainderRect.size.width = 240.;
+//  remainderRect.size.width = 240.;
   
   remainderRect = CGRectInset(remainderRect, 5, 5);
   
@@ -63,13 +63,28 @@
   
   descriptionLabel.frame = remainderRect;
 }
-
+    
 
 - (void)dealloc {
   [descriptionLabel release];
   [super dealloc];
 }
 
++(CGFloat)heightForProduct:(SKProduct*)product tableView:(UITableView*)tableView
+{
+    CGFloat height = 5;
+    CGSize constrainedSize = CGSizeMake(tableView.bounds.size.width-10, CGFLOAT_MAX);
+    
+    height += [product.localizedTitle sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:constrainedSize lineBreakMode:NSLineBreakByWordWrapping].height;
+    
+    height += 5;
+    
+    height += [product.localizedDescription sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:constrainedSize lineBreakMode:NSLineBreakByWordWrapping].height;
+    
+    height += 5;
+    
+    return height;
+}
 
 -(void)setProduct:(SKProduct*)product
 {
@@ -91,11 +106,6 @@
 		self.detailTextLabel.text = [currencyStyle stringFromNumber:product.price];
 		[currencyStyle release];
 	}
-}
-
-+(CGFloat)heightForProduct:(SKProduct*)product
-{
-  return 80.; 
 }
 
 @end

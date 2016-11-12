@@ -18,6 +18,6 @@
 
 -(void)setProduct:(SKProduct*)product;
 
-+(CGFloat)heightForProduct:(SKProduct*)product;
++(CGFloat)heightForProduct:(SKProduct*)product tableView:(UITableView*)tableView;
 
 @end
